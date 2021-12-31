@@ -1,0 +1,6 @@
+https://developers.google.com/identity/protocols/oauth2
+
+https://developers.google.com/profile/u/104246323309995753716?utm_source=developers.google.com
+https://github.com/googleapis/google-api-go-client
+https://console.cloud.google.com/apis/credentials/oauthclient?previousPage=%2Fapis%2Fcredentials%3Fproject%3Dgraphics-336821%26supportedpurview%3Dproject&project=graphics-336821&supportedpurview=project
+https://medium.com/@bnprashanth256/oauth2-with-google-account-gmail-in-go-golang-1372c237d25e
