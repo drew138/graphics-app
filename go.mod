@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/drew138/go-graphics v0.0.0-20211231181100-ab2ebb1a0e19
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.27.1
 )
