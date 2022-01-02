@@ -9,7 +9,11 @@ CREATE TABLE IF NOT EXISTS public.user (
 
 
 CREATE TABLE IF NOT EXISTS public.image (
+	pk: SERIAL PRIMARY KEY,
 	user: REFERENCES user.pk
 	url: TEXT NOT NULL;
 )
+
+CREATE INDEX ON public.image (user);
+
 -- https://dev.to/techschoolguru/how-to-write-run-database-migration-in-golang-5h6g
