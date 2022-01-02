@@ -4,13 +4,9 @@ option go_package = "messages/;messages";
 
 message User {
 	uint64 id = 1;
-	string first_name = 2;
-	string last_name = 3;
-	bool is_admin = 4;
-}
-
-message Image {
-	bytes body = 1;
+	string provider = 2;
+	bool is_demo = 3;
+	bool is_active = 4;
 }
 
 message Kernel {
@@ -27,13 +23,13 @@ message Kernel {
 
 message ImageRequest {
 	User user = 1;
-	Image image = 2;
+	bytes image = 2;
 	Kernel kernel = 3;
 
 }
 
 message ImageResponse {
-	Image image = 1;
+	bytes image = 1;
 }
 
 service ImageService {
@@ -42,5 +38,5 @@ service ImageService {
 	rpc ApplyBoxBlurFilter(ImageRequest) returns (ImageResponse) {};
 	rpc ApplyEdgeDetectionFilter(ImageRequest) returns (ImageResponse) {};
 	rpc ApplySharpenFilter(ImageRequest) returns (ImageResponse) {};
-	rpc CreateNegative(ImageRequest) returns (ImageResponse) {};
+	rpc ApplyNegative(ImageRequest) returns (ImageResponse) {};
 }

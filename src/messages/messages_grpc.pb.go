@@ -23,7 +23,7 @@ type ImageServiceClient interface {
 	ApplyBoxBlurFilter(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
 	ApplyEdgeDetectionFilter(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
 	ApplySharpenFilter(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
-	CreateNegative(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
+	ApplyNegative(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error)
 }
 
 type imageServiceClient struct {
@@ -79,9 +79,9 @@ func (c *imageServiceClient) ApplySharpenFilter(ctx context.Context, in *ImageRe
 	return out, nil
 }
 
-func (c *imageServiceClient) CreateNegative(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error) {
+func (c *imageServiceClient) ApplyNegative(ctx context.Context, in *ImageRequest, opts ...grpc.CallOption) (*ImageResponse, error) {
 	out := new(ImageResponse)
-	err := c.cc.Invoke(ctx, "/ImageService/CreateNegative", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ImageService/ApplyNegative", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ type ImageServiceServer interface {
 	ApplyBoxBlurFilter(context.Context, *ImageRequest) (*ImageResponse, error)
 	ApplyEdgeDetectionFilter(context.Context, *ImageRequest) (*ImageResponse, error)
 	ApplySharpenFilter(context.Context, *ImageRequest) (*ImageResponse, error)
-	CreateNegative(context.Context, *ImageRequest) (*ImageResponse, error)
+	ApplyNegative(context.Context, *ImageRequest) (*ImageResponse, error)
 	mustEmbedUnimplementedImageServiceServer()
 }
 
@@ -120,8 +120,8 @@ func (UnimplementedImageServiceServer) ApplyEdgeDetectionFilter(context.Context,
 func (UnimplementedImageServiceServer) ApplySharpenFilter(context.Context, *ImageRequest) (*ImageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApplySharpenFilter not implemented")
 }
-func (UnimplementedImageServiceServer) CreateNegative(context.Context, *ImageRequest) (*ImageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateNegative not implemented")
+func (UnimplementedImageServiceServer) ApplyNegative(context.Context, *ImageRequest) (*ImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApplyNegative not implemented")
 }
 func (UnimplementedImageServiceServer) mustEmbedUnimplementedImageServiceServer() {}
 
@@ -226,20 +226,20 @@ func _ImageService_ApplySharpenFilter_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ImageService_CreateNegative_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ImageService_ApplyNegative_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ImageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ImageServiceServer).CreateNegative(ctx, in)
+		return srv.(ImageServiceServer).ApplyNegative(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ImageService/CreateNegative",
+		FullMethod: "/ImageService/ApplyNegative",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ImageServiceServer).CreateNegative(ctx, req.(*ImageRequest))
+		return srv.(ImageServiceServer).ApplyNegative(ctx, req.(*ImageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -272,8 +272,8 @@ var ImageService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ImageService_ApplySharpenFilter_Handler,
 		},
 		{
-			MethodName: "CreateNegative",
-			Handler:    _ImageService_CreateNegative_Handler,
+			MethodName: "ApplyNegative",
+			Handler:    _ImageService_ApplyNegative_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

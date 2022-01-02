@@ -1,6 +1,6 @@
 FROM golang:1.17
 
-WORKDIR $GOPATH/src/github.com/Drew138/protobuff
+WORKDIR $GOPATH/src/github.com/Drew138/graphics-app
 
 # Copy everything from the current directory to the PWD (Present Working Directory) inside the container
 COPY . .

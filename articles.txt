@@ -8,3 +8,4 @@ https://smallstep.com/blog/automate-docker-ssl-tls-certificates/
 https://stackoverflow.com/questions/49874945/acme-certificate-for-grpc/49908400
 https://github.com/jhaynie/go-acme/blob/v0.0.2/examples/grpc/client/main.go
 https://mycodesmells.com/post/authentication-in-grpc
+https://dev.to/techschoolguru/use-grpc-interceptor-for-authorization-with-jwt-1c5h

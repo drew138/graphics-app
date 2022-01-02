@@ -13,7 +13,7 @@ import (
 )
 
 func processImage(req *messages.ImageRequest, kernel kernels.Kernel, transformation int) (*messages.ImageResponse, error) {
-	body := req.Image.GetBody()
+	body := req.GetImage()
 	img, format, err := image.Decode(bytes.NewReader(body))
 	if err != nil {
 		log.Fatalf("Could not decode image: %v", err)
@@ -32,7 +32,7 @@ func processImage(req *messages.ImageRequest, kernel kernels.Kernel, transformat
 		log.Fatalf("Could not encode resulting image %v: ", err)
 		return nil, err
 	}
-	return &messages.ImageResponse{Image: &messages.Image{Body: buffer.Bytes()}}, nil
+	return &messages.ImageResponse{Image: buffer.Bytes()}, nil
 }
 
 func createKernel(req *messages.ImageRequest) (kernels.Kernel, error) {

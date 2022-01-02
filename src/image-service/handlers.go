@@ -20,7 +20,7 @@ type ImageServiceServer struct {
 	messages.UnimplementedImageServiceServer
 }
 
-func (*ImageServiceServer) CreateNegative(ctx context.Context, req *messages.ImageRequest) (*messages.ImageResponse, error) {
+func (*ImageServiceServer) ApplyNegative(ctx context.Context, req *messages.ImageRequest) (*messages.ImageResponse, error) {
 	res, err := processImage(req, nil, negative)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, err.Error())
