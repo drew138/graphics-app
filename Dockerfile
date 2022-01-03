@@ -1,24 +1,27 @@
-FROM golang:1.17
+FROM golang:1.17-alpine AS builder
 
-WORKDIR $GOPATH/src/github.com/Drew138/graphics-app
-
-# Copy everything from the current directory to the PWD (Present Working Directory) inside the container
-COPY . .
-# https://stackoverflow.com/questions/66371020/how-to-use-docker-to-generate-grpc-code-based-on-go-mod-versions
 RUN apt-get update
 
-RUN apt install -y protobuf-compiler
+RUN apk add --no-cache ca-certificates git
 
-RUN protoc --version
+WORKDIR /graphics-app
 
-# Download all the dependencies
-RUN go get -d -v ./...
+COPY . .
 
-# Install the package
-RUN go install -v ./...
+RUN go mod download
 
-# This container exposes port 8080 to the outside world
-# EXPOSE 8080
+RUN CGO_ENABLED=0 go build \
+    -installsuffix 'static' \
+    -o /app .
 
-# Run the executable
-CMD ["go", "run", "main.go"]
+FROM scratch AS final
+
+COPY --from=builder /graphics-app /graphics-app
+
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+EXPOSE 50051
+
+VOLUME ["/cert-cache"]
+
+ENTRYPOINT ["/app"]
