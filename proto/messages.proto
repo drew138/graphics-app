@@ -6,7 +6,6 @@ message User {
 	uint64 id = 1;
 	string provider = 2;
 	bool is_demo = 3;
-	bool is_active = 4;
 }
 
 message Kernel {
