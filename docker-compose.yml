@@ -20,9 +20,11 @@ services:
         dockerfile: Dockerfile.dev
     command: air
     environment: 
-    # postgresql://postgres:local-password@localhost:5432/graphics
-      - GOOGLE_DATA_CLIENT_ID=1065202033458-s8e3icossbsgeei5ctva68nrsjilk043.apps.googleusercontent.com
-      - POSTGRES_URL=psql://postgres:local-password@postgres/graphics
+      - GOOGLE_PROJECT_ID=
+      - GOOGLE_BUCKET_NAME=
+      - GOOGLE_APPLICATION_CREDENTIALS=
+      - GOOGLE_DATA_CLIENT_ID=
+      - POSTGRES_URL=postgresql://postgres:local-password@postgres/graphics?sslmode=disable
       - SCHEME=http
       - HOST=localhost:8080
     networks:
@@ -40,7 +42,7 @@ services:
   frontend:
     build:
       context: frontend
-    command: npm start
+    command: sh -c 'npm install --silent && npm start'
     depends_on:
       - backend
     networks:
@@ -49,7 +51,6 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules/
     environment:
       - BACKEND_URL=http://backend:8080
 

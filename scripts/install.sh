@@ -1,4 +1,2 @@
 #!/bin/sh
-curl -s https://packagecloud.io/install/repositories/golang-migrate/migrate/script.deb.sh | sudo bash
-sudo apt-get update
-sudo apt-get install -y migrate
+curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz | tar xvz

@@ -11,7 +11,13 @@ func SelectImage(imageId int, userId string) (*models.Image, error) {
 	}
 	var pk int
 	var url string
-	err = db.QueryRow("SELECT (pk, url) FROM public.image WHERE (pk = $1) AND (user_id = $2);", imageId, userId).Scan(&pk, &url)
+	err = db.QueryRow(`
+		SELECT pk, url 
+		FROM public.image 
+		WHERE (pk = $1) 
+		AND (user_id = $2);`,
+		imageId,
+		userId).Scan(&pk, &url)
 	if err != nil {
 		return nil, err
 	}
@@ -24,11 +30,17 @@ func SelectPaginatedUserImages(userId string, from, to int) ([]*models.Image, er
 	if err != nil {
 		return nil, err
 	}
+	if from < 0 {
+		from = 0
+	}
+	if to < from {
+		to = from
+	}
 	rows, err := db.Query(`
-		SELECT (pk, url) 
+		SELECT pk, url
 		FROM public.image 
-		WHERE (user_id = $1) LIMIT ($2) 
-		OFFSET ($3);`,
+		WHERE (user_id = $1) LIMIT $2 
+		OFFSET $3;`,
 		userId, to-from, from)
 	if err != nil {
 		return nil, err

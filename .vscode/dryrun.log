@@ -1,5 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/drew/projects/graphics-app'
-./scripts/makemigrations.sh
-make: Leaving directory '/home/drew/projects/graphics-app'
- 

@@ -1,10 +1,12 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"graphics-app-backend/src/database"
 	"graphics-app-backend/src/helpers"
 	"image"
+	"image/png"
 	"net/http"
 
 	"github.com/drew138/go-graphics/filters"
@@ -26,9 +28,16 @@ func createCustomFilterImage(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
 	}
-	outputImage := filters.ApplyFilter(decodedImage.(image.Image), kernel)
 
-	url, err := helpers.UploadImage(outputImage)
+	outputImage := filters.ApplyFilter(decodedImage.(image.Image), kernel)
+	file := new(bytes.Buffer)
+	err := png.Encode(file, outputImage)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	url, err := helpers.Uploader.UploadToGoogleCloudStorage(file, userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -39,6 +48,7 @@ func createCustomFilterImage(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusCreated, newImage)
 }
 
@@ -52,7 +62,14 @@ func createFilterHandler(kernel kernels.Kernel) func(*gin.Context) {
 		}
 		outputImage := filters.ApplyFilter(decodedImage.(image.Image), kernel)
 
-		url, err := helpers.UploadImage(outputImage)
+		file := new(bytes.Buffer)
+		err := png.Encode(file, outputImage)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		url, err := helpers.Uploader.UploadToGoogleCloudStorage(file, userId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -74,9 +91,16 @@ func createNegativeFilterImage(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request"})
 		return
 	}
-	outputImage := filters.CreateNegativeImage(decodedImage.(image.Image))
 
-	url, err := helpers.UploadImage(outputImage)
+	outputImage := filters.CreateNegativeImage(decodedImage.(image.Image))
+	file := new(bytes.Buffer)
+	err := png.Encode(file, outputImage)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	url, err := helpers.Uploader.UploadToGoogleCloudStorage(file, userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

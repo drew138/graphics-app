@@ -11,13 +11,13 @@ import (
 )
 
 func getImage(c *gin.Context) {
-	authId := c.GetString("auth_id")
+	userId := c.GetString("userId")
 	imageId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	image, err := database.SelectImage(imageId, authId)
+	image, err := database.SelectImage(imageId, userId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
