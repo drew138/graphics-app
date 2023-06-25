@@ -2,14 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"graphics-app-backend/src/api"
 	"os"
 
-	"graphics-app-backend/src/api"
-
 	"github.com/gin-gonic/gin"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 )
@@ -20,8 +18,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("hola")
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
